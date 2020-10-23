@@ -6,29 +6,63 @@ export default class CalculatorScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      display: "0",
-      isNull: "true",
+      display: "",
+      operatorPressed: false,
+      runningTotal: 0,
+      firstInput: 0,
+      secondInput: 0,
+      lastOperatorPressed: "",
+      result: 0,
+      input: 0,
     };
   }
 
   onNumberPress = (num) => {
-    if (this.state.display === "0") {
-      this.setState({ display: num });
-      this.setState({ isNull: "false" });
-    } else {
-      this.setState({ display: this.state.display + num });
-    }
+    let inputVal = (this.state.input * 10) + num;
+    this.setState({ input: inputVal });
   };
 
   onClearPress = () => {
-    this.setState({ display: "0" });
+    this.setState({ input: 0 });
+  };
+
+  onOperatorPress = (op) => {
+
+    var firstNum = Number(this.state.display);
+    console.log(firstNum);
+    this.setState({ display: "", firstInput: firstNum });
+
+
+    if (op === "+") {
+      this.setState({ lastOperatorPressed: "addition" });
+    }
+
+    if (op === "-") {
+
+    }
+
+  };
+
+
+  onEqualPress = () => {
+
+    this.setState({ secondInput: Number(this.state.display) });
+
+    var result2 = this.state.firstInput + this.state.secondInput;
+    console.log(result2);
+    if (this.state.lastOperatorPressed === "addition") {
+      this.setState({ result: result2 });
+    }
+
+    this.setState({ display: this.state.result.toString() });
+
   };
 
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.containerDisplay}>
-          <Display display={this.state.display} />
+          <Display display={this.state.input} />
         </View>
 
         <View>
@@ -41,7 +75,14 @@ export default class CalculatorScreen extends React.Component {
               color="red"
               backgroundColor="yellow"
             />
-            <OpButton title="+" color="red" backgroundColor="yellow" />
+            <OpButton
+              onPress={() => {
+                this.onOperatorPress("+");
+              }}
+              title="+"
+              color="red"
+              backgroundColor="yellow"
+            />
             <OpButton title="-" color="red" backgroundColor="yellow" />
             <OpButton title="*" color="red" backgroundColor="yellow" />
           </View>
@@ -63,7 +104,7 @@ export default class CalculatorScreen extends React.Component {
           <View style={styles.buttonRow}>
             <OpButton
               onPress={() => {
-                this.onNumberPress("1");
+                this.onNumberPress(1);
               }}
               title="1"
               color="red"
@@ -71,7 +112,7 @@ export default class CalculatorScreen extends React.Component {
             />
             <OpButton
               onPress={() => {
-                this.onNumberPress("2");
+                this.onNumberPress(2);
               }}
               title="2"
               color="red"
@@ -79,7 +120,7 @@ export default class CalculatorScreen extends React.Component {
             />
             <OpButton
               onPress={() => {
-                this.onNumberPress("3");
+                this.onNumberPress(3);
               }}
               title="3"
               color="red"
@@ -87,7 +128,7 @@ export default class CalculatorScreen extends React.Component {
             />
             <OpButton
               onPress={() => {
-                this.onNumberPress("4");
+                this.onNumberPress(4);
               }}
               title="4"
               color="red"
@@ -98,7 +139,7 @@ export default class CalculatorScreen extends React.Component {
           <View style={styles.buttonRow}>
             <OpButton
               onPress={() => {
-                this.onNumberPress("5");
+                this.onNumberPress(5);
               }}
               title="5"
               color="red"
@@ -106,7 +147,7 @@ export default class CalculatorScreen extends React.Component {
             />
             <OpButton
               onPress={() => {
-                this.onNumberPress("6");
+                this.onNumberPress(6);
               }}
               title="6"
               color="red"
@@ -114,7 +155,7 @@ export default class CalculatorScreen extends React.Component {
             />
             <OpButton
               onPress={() => {
-                this.onNumberPress("7");
+                this.onNumberPress(7);
               }}
               title="7"
               color="red"
@@ -122,7 +163,7 @@ export default class CalculatorScreen extends React.Component {
             />
             <OpButton
               onPress={() => {
-                this.onNumberPress("8");
+                this.onNumberPress(8);
               }}
               title="8"
               color="red"
@@ -133,7 +174,7 @@ export default class CalculatorScreen extends React.Component {
           <View style={styles.buttonRow}>
             <OpButton
               onPress={() => {
-                this.onNumberPress("9");
+                this.onNumberPress(9);
               }}
               title="9"
               color="red"
@@ -141,14 +182,21 @@ export default class CalculatorScreen extends React.Component {
             />
             <OpButton
               onPress={() => {
-                this.onNumberPress("0");
+                this.onNumberPress(0);
               }}
               title="0"
               color="red"
               backgroundColor="yellow"
             />
             <OpButton title="." color="red" backgroundColor="yellow" />
-            <OpButton title="=" color="red" backgroundColor="yellow" />
+            <OpButton
+              onPress={() => {
+                this.onEqualPress();
+              }}
+              title="="
+              color="red"
+              backgroundColor="yellow"
+            />
           </View>
         </View>
       </View>
