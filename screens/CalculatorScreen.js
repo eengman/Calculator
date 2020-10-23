@@ -23,38 +23,28 @@ export default class CalculatorScreen extends React.Component {
   };
 
   onClearPress = () => {
-    this.setState({ input: 0 });
+    this.setState({ input: 0, firstInput: 0 });
   };
 
   onOperatorPress = (op) => {
 
-    var firstNum = Number(this.state.display);
-    console.log(firstNum);
-    this.setState({ display: "", firstInput: firstNum });
-
+    this.setState({ firstInput: this.state.input });
+    this.setState({ input: 0 });
 
     if (op === "+") {
       this.setState({ lastOperatorPressed: "addition" });
     }
 
-    if (op === "-") {
-
-    }
 
   };
 
 
   onEqualPress = () => {
 
-    this.setState({ secondInput: Number(this.state.display) });
-
-    var result2 = this.state.firstInput + this.state.secondInput;
-    console.log(result2);
     if (this.state.lastOperatorPressed === "addition") {
-      this.setState({ result: result2 });
+      let val = this.state.firstInput + this.state.input;
+      this.setState({ input: val });
     }
-
-    this.setState({ display: this.state.result.toString() });
 
   };
 
