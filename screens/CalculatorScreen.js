@@ -51,6 +51,30 @@ export default class CalculatorScreen extends React.Component {
       this.setState({ lastOperatorPressed: "exponent" });
     }
 
+    if (op === "sin") {
+      this.setState({ lastOperatorPressed: "sin" });
+    }
+
+    if (op === "cos") {
+      this.setState({ lastOperatorPressed: "cos" });
+    }
+
+    if (op === "tan") {
+      this.setState({ lastOperatorPressed: "tan" });
+    }
+
+    if (op === "cot") {
+      this.setState({ lastOperatorPressed: "cot" });
+    }
+
+    if (op === "ln") {
+      this.setState({ lastOperatorPressed: "ln" });
+    }
+
+    if (op === "log") {
+      this.setState({ lastOperatorPressed: "log" });
+    }
+
 
 
   };
@@ -87,6 +111,38 @@ export default class CalculatorScreen extends React.Component {
       }
       this.setState({ input: returnVal });
     }
+
+    if (this.state.lastOperatorPressed === "sin") {
+      let val = Math.sin(this.state.input);
+      this.setState({ input: val });
+    }
+
+    if (this.state.lastOperatorPressed === "cos") {
+      let val = Math.cos(this.state.input);
+      this.setState({ input: val });
+    }
+
+    if (this.state.lastOperatorPressed === "tan") {
+      let val = Math.tan(this.state.input);
+      this.setState({ input: val });
+    }
+
+    if (this.state.lastOperatorPressed === "cot") {
+      let val = Math.cot(this.state.input);
+      this.setState({ input: val });
+    }
+
+    if (this.state.lastOperatorPressed === "ln") {
+      let val = Math.LN10(this.state.input);
+      this.setState({ input: val });
+    }
+
+    if (this.state.lastOperatorPressed === "log") {
+      let val = Math.log10(this.state.input);
+      this.setState({ input: val });
+    }
+
+
 
 
 
@@ -135,15 +191,28 @@ export default class CalculatorScreen extends React.Component {
             <OpButton onPress={() => {
               this.onOperatorPress("^");
             }} title="^" color="red" backgroundColor="yellow" />
-            <OpButton title="sin" color="red" backgroundColor="yellow" />
-            <OpButton title="cos" color="red" backgroundColor="yellow" />
+
+            <OpButton onPress={() => {
+              this.onOperatorPress("sin");
+            }} title="sin" color="red" backgroundColor="yellow" />
+            <OpButton onPress={() => {
+              this.onOperatorPress("cos");
+            }} title="cos" color="red" backgroundColor="yellow" />
           </View>
 
           <View style={styles.buttonRow}>
-            <OpButton title="tan" color="red" backgroundColor="yellow" />
-            <OpButton title="cot" color="red" backgroundColor="yellow" />
-            <OpButton title="ln" color="red" backgroundColor="yellow" />
-            <OpButton title="log" color="red" backgroundColor="yellow" />
+            <OpButton onPress={() => {
+              this.onOperatorPress("tan");
+            }} title="tan" color="red" backgroundColor="yellow" />
+            <OpButton onPress={() => {
+              this.onOperatorPress("cot");
+            }} title="cot" color="red" backgroundColor="yellow" />
+            <OpButton onPress={() => {
+              this.onOperatorPress("ln");
+            }} title="ln" color="red" backgroundColor="yellow" />
+            <OpButton onPress={() => {
+              this.onOperatorPress("log");
+            }} title="log" color="red" backgroundColor="yellow" />
           </View>
 
           <View style={styles.buttonRow}>
