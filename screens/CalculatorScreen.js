@@ -7,23 +7,25 @@ export default class CalculatorScreen extends React.Component {
     super(props);
     this.state = {
       display: "",
+      inputString: "",
       operatorPressed: false,
-      runningTotal: 0,
       firstInput: 0,
-      secondInput: 0,
       lastOperatorPressed: "",
-      result: 0,
       input: 0,
     };
   }
 
   onNumberPress = (num) => {
+    // basic
     let inputVal = (this.state.input * 10) + num;
     this.setState({ input: inputVal });
+
+    // complex
+    this.setState({ inputString: this.state.inputString + num.toString() });
   };
 
   onClearPress = () => {
-    this.setState({ input: 0, firstInput: 0 });
+    this.setState({ input: 0, firstInput: 0, inputString: "" });
   };
 
   onOperatorPress = (op) => {
@@ -75,12 +77,108 @@ export default class CalculatorScreen extends React.Component {
       this.setState({ lastOperatorPressed: "log" });
     }
 
-
+    // complex
+    this.setState({ inputString: this.state.inputString + op });
 
   };
 
+  infixToPostfix = () => {
+    let infixString = this.state.inputString;
+    let postfixString = "";
+    let infixStack = [];
+
+    // precedence
+    var precedence = function (operator) {
+      switch (operator) {
+        case "^": return 3;
+        case "*":
+        case "/": return 2;
+        case "+":
+        case "-": return 1;
+        default: return 0;
+      }
+    }
+
+    for (var i = 0; i < infixString.length; i++) {
+      var c = infixString.charAt(i);
+      if (!isNaN(parseInt(c))) {
+        postfixString += c;
+      } else if (c === "+" || c === "-" || c === "*" || c === "/" || c === "^") {
+        while (c != "^" && (infixStack.length > 0) && (precedence(c) <= precedence(infixStack[infixStack.length - 1]))) {
+          postfixString += infixStack.pop();
+        }
+        infixStack.push(c);
+      }
+    }
+    while (infixStack.length > 0) {
+      postfixString += infixStack.pop();
+    }
+
+    this.evaluate(postfixString);
+
+  }
+
+  evaluate = (postfixString) => {
+
+    var powerOf = function (a, b) {
+      let val = a;
+      let returnVal = 1;
+      var i;
+      for (i = b; i > 0; i--) {
+        returnVal *= val;
+      }
+      return returnVal;
+    }
+
+    let stack = [];
+
+    for (var i = 0; i < postfixString.length; i++) {
+      var c = postfixString.charAt(i);
+      if (!isNaN(parseInt(c))) {
+        stack.push(parseInt(c));
+      } else if (stack.length > 0) {
+        console.log(stack);
+        var b = parseInt(stack.pop());
+        var a = parseInt(stack.pop());
+        var result;
+        console.log(c);
+        if (c === "*") {
+          result = a * b;
+        } else if (c === "-") {
+          result = a - b;
+        } else if (c === "^") {
+          result = powerOf(b, a);
+        } else if (c === "/") {
+          result = a / b;
+        } else if (c === "+") {
+          result = a + b;
+        }
+        stack.push(result);
+
+      } else {
+        // handle paretheses
+      }
+    }
+
+    this.setState({ inputString: result });
+
+  }
+
+  powerOf = (a, b) => {
+
+    let val = a;
+    let returnVal = 1;
+    var i;
+    for (i = b; i > 0; i--) {
+      returnVal *= val;
+    }
+
+    return returnVal;
+  }
+
 
   onEqualPress = () => {
+    this.infixToPostfix();
 
     if (this.state.lastOperatorPressed === "addition") {
       let val = this.state.firstInput + this.state.input;
@@ -141,18 +239,15 @@ export default class CalculatorScreen extends React.Component {
       let val = Math.log10(this.state.input);
       this.setState({ input: val });
     }
-
-
-
-
-
   };
+
+
 
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.containerDisplay}>
-          <Display display={this.state.input} />
+          <Display display={this.state.inputString} />
         </View>
 
         <View>
