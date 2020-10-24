@@ -120,72 +120,6 @@ export default class CalculatorScreen extends React.Component {
 
   }
 
-  // second attempt
-  infixToPostfix2 = () => {
-
-    let infixString = this.state.inputString;
-
-    let postfixString = "";
-    let infixStack = [];
-
-
-
-    //let inputVal = (this.state.input * 10) + num;
-    //this.setState({ input: inputVal });
-    let test = [];
-    let str = "";
-    var j = 0;
-    for (var i = 0; i < infixString.length; i++) {
-      var c = infixString.charAt(i);
-      if (!isNaN(parseInt(c))) {
-        str += c;
-      } else {
-        test.push(str);
-        str = "";
-      }
-    }
-    test.push(str);
-
-    console.log("test: " + test);
-
-
-
-
-    // precedence
-    var precedence = function (operator) {
-      switch (operator) {
-        case "^": return 3;
-        case "*":
-        case "/": return 2;
-        case "+":
-        case "-": return 1;
-        default: return 0;
-      }
-    }
-
-
-
-    for (var i = 0; i < infixString.length; i++) {
-      var c = infixString.charAt(i);
-
-      if (!isNaN(parseInt(c))) {
-        postfixString += c;
-      } else if (c === "+" || c === "-" || c === "*" || c === "/" || c === "^") {
-        while (c != "^" && (infixStack.length > 0) && (precedence(c) <= precedence(infixStack[infixStack.length - 1]))) {
-          postfixString += infixStack.pop();
-        }
-        infixStack.push(c);
-      }
-    }
-    while (infixStack.length > 0) {
-      postfixString += infixStack.pop();
-    }
-
-    console.log(postfixString);
-    this.evaluate(postfixString);
-
-  }
-
   evaluate = (postfixString) => {
 
     var powerOf = function (a, b) {
@@ -246,67 +180,34 @@ export default class CalculatorScreen extends React.Component {
 
 
   onEqualPress = () => {
-    this.infixToPostfix2();
+    //this.infixToPostfix();
 
-    if (this.state.lastOperatorPressed === "addition") {
-      let val = this.state.firstInput + this.state.input;
-      this.setState({ input: val });
-    }
 
-    if (this.state.lastOperatorPressed === "subtraction") {
-      let val = this.state.firstInput - this.state.input;
-      this.setState({ input: val });
-    }
-
-    if (this.state.lastOperatorPressed === "multiplication") {
-      let val = this.state.firstInput * this.state.input;
-      this.setState({ input: val });
-    }
-
-    if (this.state.lastOperatorPressed === "division") {
-      let val = this.state.firstInput / this.state.input;
-      this.setState({ input: val });
-    }
-
-    if (this.state.lastOperatorPressed === "exponent") {
-      let val = this.state.firstInput;
-      let returnVal = 1;
-      var i;
-      for (i = this.state.input; i > 0; i--) {
-        returnVal *= val;
-      }
-      this.setState({ input: returnVal });
-    }
 
     if (this.state.lastOperatorPressed === "sin") {
       let val = Math.sin(this.state.input);
-      this.setState({ input: val });
-    }
-
-    if (this.state.lastOperatorPressed === "cos") {
+      this.setState({ inputString: val });
+    } else if (this.state.lastOperatorPressed === "cos") {
       let val = Math.cos(this.state.input);
-      this.setState({ input: val });
-    }
-
-    if (this.state.lastOperatorPressed === "tan") {
+      this.setState({ inputString: val });
+    } else if (this.state.lastOperatorPressed === "tan") {
       let val = Math.tan(this.state.input);
-      this.setState({ input: val });
-    }
-
-    if (this.state.lastOperatorPressed === "cot") {
-      let val = Math.cot(this.state.input);
-      this.setState({ input: val });
-    }
-
-    if (this.state.lastOperatorPressed === "ln") {
-      let val = Math.LN10(this.state.input);
-      this.setState({ input: val });
-    }
-
-    if (this.state.lastOperatorPressed === "log") {
+      this.setState({ inputString: val });
+    } else if (this.state.lastOperatorPressed === "cot") {
+      let val = Math.cos(this.state.input) / Math.sin(this.state.input);
+      this.setState({ inputString: val });
+    } else if (this.state.lastOperatorPressed === "ln") {
+      let val = Math.log(this.state.input);
+      this.setState({ inputString: val });
+    } else if (this.state.lastOperatorPressed === "log") {
       let val = Math.log10(this.state.input);
-      this.setState({ input: val });
+      this.setState({ inputString: val });
+    } else {
+      this.infixToPostfix();
     }
+
+
+
   };
 
 
