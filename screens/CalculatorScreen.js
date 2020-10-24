@@ -35,6 +35,23 @@ export default class CalculatorScreen extends React.Component {
       this.setState({ lastOperatorPressed: "addition" });
     }
 
+    if (op === "-") {
+      this.setState({ lastOperatorPressed: "subtraction" });
+    }
+
+    if (op === "*") {
+      this.setState({ lastOperatorPressed: "multiplication" });
+    }
+
+    if (op === "/") {
+      this.setState({ lastOperatorPressed: "division" });
+    }
+
+    if (op === "^") {
+      this.setState({ lastOperatorPressed: "exponent" });
+    }
+
+
 
   };
 
@@ -45,6 +62,33 @@ export default class CalculatorScreen extends React.Component {
       let val = this.state.firstInput + this.state.input;
       this.setState({ input: val });
     }
+
+    if (this.state.lastOperatorPressed === "subtraction") {
+      let val = this.state.firstInput - this.state.input;
+      this.setState({ input: val });
+    }
+
+    if (this.state.lastOperatorPressed === "multiplication") {
+      let val = this.state.firstInput * this.state.input;
+      this.setState({ input: val });
+    }
+
+    if (this.state.lastOperatorPressed === "division") {
+      let val = this.state.firstInput / this.state.input;
+      this.setState({ input: val });
+    }
+
+    if (this.state.lastOperatorPressed === "exponent") {
+      let val = this.state.firstInput;
+      let returnVal = 1;
+      var i;
+      for (i = this.state.input; i > 0; i--) {
+        returnVal *= val;
+      }
+      this.setState({ input: returnVal });
+    }
+
+
 
   };
 
@@ -73,13 +117,24 @@ export default class CalculatorScreen extends React.Component {
               color="red"
               backgroundColor="yellow"
             />
-            <OpButton title="-" color="red" backgroundColor="yellow" />
-            <OpButton title="*" color="red" backgroundColor="yellow" />
+            <OpButton onPress={() => {
+              this.onOperatorPress("-");
+            }}
+              title="-" color="red" backgroundColor="yellow" />
+
+            <OpButton onPress={() => {
+              this.onOperatorPress("*");
+            }} title="*" color="red" backgroundColor="yellow" />
           </View>
 
           <View style={styles.buttonRow}>
-            <OpButton title="/" color="red" backgroundColor="yellow" />
-            <OpButton title="^" color="red" backgroundColor="yellow" />
+            <OpButton onPress={() => {
+              this.onOperatorPress("/");
+            }} title="/" color="red" backgroundColor="yellow" />
+
+            <OpButton onPress={() => {
+              this.onOperatorPress("^");
+            }} title="^" color="red" backgroundColor="yellow" />
             <OpButton title="sin" color="red" backgroundColor="yellow" />
             <OpButton title="cos" color="red" backgroundColor="yellow" />
           </View>
